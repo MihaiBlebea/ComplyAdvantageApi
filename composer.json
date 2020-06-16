@@ -1,0 +1,30 @@
+{
+    "name": "chip/comply-advantage-api",
+    "description": "PHP library to interact with Comply Advantage API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mihai Blebea",
+            "email": "mihai@getchip.uk"
+        }
+    ],
+    "require": {
+        "php" : "~7.2",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : ">=8.0",
+        "squizlabs/php_codesniffer": "3.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Chip\\ComplyAdvantageApi\\": "src"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    }
+}
