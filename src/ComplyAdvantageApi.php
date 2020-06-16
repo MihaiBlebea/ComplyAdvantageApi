@@ -2,6 +2,7 @@
 
 namespace Chip\ComplyAdvantageApi;
 
+use Chip\ComplyAdvantageApi\Requests\CreateSearchRequest;
 use Chip\ComplyAdvantageApi\Exceptions\ApiException;
 use GuzzleHttp\Client;
 use Exception;
@@ -21,10 +22,10 @@ class ComplyAdvantageApi
 
     // Create a new search by POSTing search terms, parameters and filters. 
     // By default creating a search will pull the first 100 results (if that many exist) from our database
-    public function createSearch(array $options): ?array
+    public function createSearch(CreateSearchRequest $request): ?array
     {
         try {
-            $response = $this->http()->request('POST', '/searches?api_key=' . $this->key, [ "json" => $options ]);
+            $response = $this->http()->request('POST', '/searches?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
                 return $this->asArray((string) $response->getBody())['content'];

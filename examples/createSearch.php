@@ -2,7 +2,9 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
-$response = $client->createSearch([
+use Chip\ComplyAdvantageApi\Requests\CreateSearchRequest;
+
+$request = new CreateSearchRequest([
     "search_term" => [
         'first_name' => 'Mihai',
         'last_name' => 'Blebea'
@@ -13,5 +15,7 @@ $response = $client->createSearch([
     ],
     "share_url" => 1
 ]);
+
+$response = $client->createSearch($request);
 
 var_dump($response);
