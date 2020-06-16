@@ -1,5 +1,7 @@
 <?php
 
+namespace Chip\ComplyAdvantageApi\Filters;
+
 use Chip\ComplyAdvantageApi\Filters\Filter;
 
 class BirthYearFilter implements Filter

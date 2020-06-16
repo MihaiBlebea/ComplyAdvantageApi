@@ -1,6 +1,6 @@
 <?php
 
-namespace Chip\ComplyAdvantageApi;
+namespace Chip\ComplyAdvantageApi\Filters;
 
 use Chip\ComplyAdvantageApi\Exceptions\InvalidFilterException;
 use Chip\ComplyAdvantageApi\Filters\Filter;
