@@ -21,7 +21,7 @@ class CreateSearchRequest
 
     public function setSearchTerm(SearchTerm $searchTerm)
     {
-        $this->params['search_term'] = $searchTerm->toArray();
+        $this->params['search_term'] = $searchTerm->getValue();
     }
 
     public function setClientRef(string $clientRef)

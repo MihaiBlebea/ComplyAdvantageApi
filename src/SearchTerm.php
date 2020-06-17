@@ -7,12 +7,29 @@ class SearchTerm
     /** @var array */
     private $params;
 
+    /** @var string */
+    private $param;
+
     public function __construct(array $params = null)
     {
         if ($params === null) {
             $this->params = [];
         }
         $this->params = $params;
+    }
+
+    public static function fromString(string $term)
+    {
+        $instance = new SearchTerm();
+        $instance->setTerm($term);
+
+        return $instance;
+    }
+
+    public function setTerm(string $term)
+    {
+        $this->params = [];
+        $this->param = $term;
     }
 
     public function setFirstName(string $firstName)
@@ -30,8 +47,11 @@ class SearchTerm
         $this->params['last_name'] = $lastName;
     }
 
-    public function toArray(): array
+    public function getValue(): array
     {
-        return $this->params;
+        if (count($this->params) > 0) {
+            return $this->params;
+        }
+        return $this->param;
     }
 }
