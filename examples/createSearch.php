@@ -21,16 +21,18 @@ use Chip\ComplyAdvantageApi\Filters\FilterFactory;
 $request = new CreateSearchRequest();
 
 $searchTerm = new SearchTerm();
-$searchTerm->setFirstName('Cristina');
-$searchTerm->setLastName('Aliman');
+$searchTerm->setFirstName('Ion');
+$searchTerm->setLastName('Iliescu');
 
 $request->setSearchTerm($searchTerm);
 
 $typeFilter = FilterFactory::build('TypeFilter', ['sanction', 'warning']);
 $countryFilter = FilterFactory::build('CountryFilter', ['RO']);
-$birthYearFilter = FilterFactory::build('BirthYearFilter', '1986');
 
-$request->setFilters($typeFilter, $countryFilter, $birthYearFilter);
+$request->shouldShareUrl(true);
+$request->setClientRef("CHIP_001");
+
+$request->setFilters($typeFilter, $countryFilter);
 
 // var_dump($request);
 // die();

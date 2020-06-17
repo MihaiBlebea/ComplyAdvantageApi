@@ -2,16 +2,16 @@
 
 require_once __DIR__ . '/bootstrap.php';
 
-$response = $client->updateSearchEntities('1592312982-EZMyGbAr', [
-    "search_term" => [
-        'first_name' => 'Mihai',
-        'last_name' => 'Blebea'
-    ],
-    "fuzziness" => 0.6,
-    "filters" => [
-        "types"=> ["sanction", "warning"]
-    ],
-    "share_url" => 1
-]);
+
+use Chip\ComplyAdvantageApi\Requests\UpdateSearchEntityRequest;
+
+$request = new UpdateSearchEntityRequest();
+
+$request->addEntity('4M5XVH324PPZWLN');
+$request->setMatchStatus('true_positive');
+$request->setRiskLevel('low');
+$request->setWhitelist(true);
+
+$response = $client->updateSearchEntities('1592391215-mGndPRqB', $request);
 
 var_dump($response);

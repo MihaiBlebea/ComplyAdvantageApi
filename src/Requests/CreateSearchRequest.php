@@ -29,6 +29,16 @@ class CreateSearchRequest
         $this->params['client_ref'] = $clientRef;
     }
 
+    public function setExactMatch(bool $exactMatch)
+    {
+        $this->params['exact_match'] = $exactMatch;
+    }
+
+    public function setFuzziness(float $fuziness)
+    {
+        $this->params['fuzziness'] = $fuziness;
+    }
+
     public function setFilters(Filter ...$filters)
     {
         $this->params['filters'] = [];

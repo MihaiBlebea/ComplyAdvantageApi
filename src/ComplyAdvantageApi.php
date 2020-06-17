@@ -4,6 +4,8 @@ namespace Chip\ComplyAdvantageApi;
 
 use Chip\ComplyAdvantageApi\Requests\CreateSearchRequest;
 use Chip\ComplyAdvantageApi\Requests\GetSearchRequest;
+use Chip\ComplyAdvantageApi\Requests\UpdateSearchRequest;
+use Chip\ComplyAdvantageApi\Requests\UpdateSearchEntityRequest;
 use Chip\ComplyAdvantageApi\Exceptions\ApiException;
 use GuzzleHttp\Client;
 use Exception;
@@ -39,10 +41,10 @@ class ComplyAdvantageApi
     }
 
     // Update the assignee, status or risk level of a search.
-    public function updateSearch(string $id, array $options): ?array
+    public function updateSearch(string $id, UpdateSearchRequest $request): ?array
     {
         try {
-            $response = $this->http()->request('PATCH', '/searches/' . $id . '?api_key=' . $this->key, [ "json" => $options ]);
+            $response = $this->http()->request('PATCH', '/searches/' . $id . '?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
                 return $this->asArray((string) $response->getBody())['content'];
@@ -55,10 +57,10 @@ class ComplyAdvantageApi
     }
 
     // Update the match-status of entities within a search result
-    public function updateSearchEntities(string $id, array $options): ?array
+    public function updateSearchEntities(string $id, UpdateSearchEntityRequest $request): ?array
     {
         try {
-            $response = $this->http()->request('PATCH', '/searches/' . $id . '/entities?api_key=' . $this->key, [ "json" => $options ]);
+            $response = $this->http()->request('PATCH', '/searches/' . $id . '/entities?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
                 return $this->asArray((string) $response->getBody())['content'];

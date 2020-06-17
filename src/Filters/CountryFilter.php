@@ -42,7 +42,7 @@ class CountryFilter implements Filter
 
     public function getValue()
     {
-        return $this->params;
+        return $this->countries;
     }
 
     public function getName(): string
