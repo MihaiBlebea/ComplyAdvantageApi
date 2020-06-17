@@ -27,7 +27,7 @@ class CreatedTimeFilter implements Filter
         }
 
         if (array_key_exists('from', $times)) {
-            $this->to = date_format($times['from'], "Y-m-d");
+            $this->from = date_format($times['from'], "Y-m-d");
         }
     }
 
@@ -43,6 +43,12 @@ class CreatedTimeFilter implements Filter
 
         if (array_key_exists('from', $times) === true && !($times['from'] instanceof DateTime)) {
             return false;
+        }
+
+        if (array_key_exists('to', $times) === true && array_key_exists('from', $times) === true) {
+            if ($times['from'] > $times['to']) {
+                return false;
+            }
         }
 
         return true;
