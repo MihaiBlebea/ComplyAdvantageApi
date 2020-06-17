@@ -35,6 +35,6 @@ class CountryFilterTest extends TestCase
     {
         $this->expectException(InvalidFilterException::class);
 
-        $filter = new CountryFilter(['Romania']);
+        new CountryFilter(['Romania']);
     }
 }

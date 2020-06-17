@@ -4,6 +4,7 @@ namespace Chip\ComplyAdvantageApi\Requests;
 
 use Chip\ComplyAdvantageApi\SearchTerm;
 use Chip\ComplyAdvantageApi\Filters\Filter;
+use Chip\ComplyAdvantageApi\Exceptions\InvalidCreateException;
 use Chip\ComplyAdvantageApi\Exceptions\InvalidFilterException;
 
 class CreateSearchRequest
@@ -17,6 +18,15 @@ class CreateSearchRequest
             $this->params = [];
         }
         $this->params = $params;
+    }
+
+    public static function fromArray(array $params)
+    {
+        if (count($params) === 0) {
+            throw new InvalidCreateException("Create request was supplied empty array");
+        }
+
+        return new CreateSearchRequest($params);
     }
 
     public function setSearchTerm(SearchTerm $searchTerm)

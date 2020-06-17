@@ -21,6 +21,10 @@ class RiskLevelFilter implements Filter
 
     public function __construct(array $levels)
     {
+        if (count($levels) === 0) {
+            throw new InvalidFilterException("Filter risk level was supplied empty array");
+        }
+
         foreach($levels as $level) {
             if ($this->isValid($level) === false) {
                 throw new InvalidFilterException("Filter level " . $level . " is invalid");

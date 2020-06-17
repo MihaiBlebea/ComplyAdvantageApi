@@ -32,6 +32,6 @@ class BirthYearFilterTest extends TestCase
     {
         $this->expectException(InvalidFilterException::class);
 
-        $filter = new BirthYearFilter('20202');
+        new BirthYearFilter('20202');
     }
 }

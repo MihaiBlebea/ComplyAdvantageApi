@@ -23,9 +23,8 @@ class FilterFactory
                 return new CountryFilter($params);
             case 'TypeFilter':
                 return new TypeFilter($params);
-
             case 'CreatedTimeFilter':
-                    return new CreatedTimeFilter($params);
+                return new CreatedTimeFilter($params);
             case 'MatchStatusFilter':
                 return new MatchStatusFilter($params);
             case 'RiskLevelFilter':

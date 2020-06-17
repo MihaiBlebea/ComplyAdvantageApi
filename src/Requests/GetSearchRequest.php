@@ -4,6 +4,9 @@ namespace Chip\ComplyAdvantageApi\Requests;
 
 use Chip\ComplyAdvantageApi\Exceptions\InvalidFilterException;
 use Chip\ComplyAdvantageApi\Filters\Filter;
+use Chip\ComplyAdvantageApi\Filters\RiskLevelFilter;
+use Chip\ComplyAdvantageApi\Filters\MatchStatusFilter;
+use Chip\ComplyAdvantageApi\Filters\SearchTermFilter;
 
 class GetSearchRequest
 {
@@ -15,7 +18,20 @@ class GetSearchRequest
         if ($params === null) {
             $this->params = [];
         }
+
         $this->params = $params;
+
+        if (array_key_exists('risk_level', $params)) {
+            $this->setFilters(RiskLevelFilter::fromArray($params['risk_level']));
+        }
+
+        if (array_key_exists('match_status', $params)) {
+            $this->setFilters(MatchStatusFilter::fromArray($params['match_status']));
+        }
+
+        if (array_key_exists('search_term', $params)) {
+            $this->setFilters(SearchTermFilter::fromString($params['search_term']));
+        }
     }
 
     public function setPagination(int $offset, int $limit)
@@ -60,7 +76,16 @@ class GetSearchRequest
 
     public function toUrl(): string
     {
-        return implode('&', array_values($this->params));
+        $params = [];
+        foreach ($this->params as $key => $param) {
+            array_push($params, $key . "=" . $param);
+        }
+        return implode('&', $params);
+    }
+
+    public function toArray(): array
+    {
+        return $this->params;
     }
 
     public function countParams(): int

@@ -22,6 +22,10 @@ class MatchStatusFilter implements Filter
 
     public function __construct(array $statuses)
     {
+        if (count($statuses) === 0) {
+            throw new InvalidFilterException("Filter status was supplied empty array");
+        }
+
         foreach($statuses as $status) {
             if ($this->isValid($status) === false) {
                 throw new InvalidFilterException("Filter status " . $status . " is invalid");

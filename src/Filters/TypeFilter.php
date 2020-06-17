@@ -33,6 +33,10 @@ class TypeFilter implements Filter
 
     public function __construct(array $types)
     {
+        if (count($types) === 0) {
+            throw new InvalidFilterException("Filter type was supplied empty array");
+        }
+
         foreach($types as $type) {
             if ($this->isValid($type) === false) {
                 throw new InvalidFilterException("Filter type " . $type . " is invalid");
@@ -61,7 +65,7 @@ class TypeFilter implements Filter
 
     public function getValue()
     {
-        return $this->params;
+        return $this->types;
     }
 
     public function getName(): string
