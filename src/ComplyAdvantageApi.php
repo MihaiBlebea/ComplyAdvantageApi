@@ -3,6 +3,7 @@
 namespace Chip\ComplyAdvantageApi;
 
 use Chip\ComplyAdvantageApi\Requests\CreateSearchRequest;
+use Chip\ComplyAdvantageApi\Requests\GetSearchRequest;
 use Chip\ComplyAdvantageApi\Exceptions\ApiException;
 use GuzzleHttp\Client;
 use Exception;
@@ -58,6 +59,29 @@ class ComplyAdvantageApi
     {
         try {
             $response = $this->http()->request('PATCH', '/searches/' . $id . '/entities?api_key=' . $this->key, [ "json" => $options ]);
+
+            if ($response->getBody()) {
+                return $this->asArray((string) $response->getBody())['content'];
+            }
+
+            return null;
+        } catch(Exception $e) {
+            throw new ApiException($e->getMessage(), null);
+        }
+    }
+
+    // Retrieve the previous searches on your account. This includes many options for pagination and filtering results.
+    public function getSearch(GetSearchRequest $request): ?array
+    {
+        try {
+
+            $url = '/searches/?api_key=' . $this->key;
+
+            if ($request->countParams() > 0) {
+                $url .= '&' . $request->toUrl();
+            }
+
+            $response = $this->http()->request('GET', $url);
 
             if ($response->getBody()) {
                 return $this->asArray((string) $response->getBody())['content'];
