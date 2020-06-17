@@ -12,7 +12,7 @@ class RiskLevelFilter implements Filter
 
     private const NAME = "RiskLevelFilter";
 
-    private const VALID_LEVELS = [
+    public const VALID_LEVELS = [
         'low', 
         'medium', 
         'high', 

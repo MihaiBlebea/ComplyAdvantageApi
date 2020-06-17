@@ -12,7 +12,7 @@ class MatchStatusFilter implements Filter
 
     private const NAME = "MatchStatusFilter";
 
-    private const VALID_STATUSES = [
+    public const VALID_STATUSES = [
         'no_match', 
         'false_positive', 
         'potential_match', 

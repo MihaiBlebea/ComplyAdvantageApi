@@ -3,26 +3,13 @@
 namespace Chip\ComplyAdvantageApi\Requests;
 
 use Chip\ComplyAdvantageApi\Exceptions\InvalidUpdateException;
+use Chip\ComplyAdvantageApi\Filters\MatchStatusFilter;
+use Chip\ComplyAdvantageApi\Filters\RiskLevelFilter;
 
 class UpdateSearchRequest
 {
     /** @var array */
     protected $params;
-
-    private const VALID_STATUSES = [
-        'no_match', 
-        'false_positive', 
-        'potential_match', 
-        'true_positive',
-        'unknown'
-    ];
-
-    private const VALID_LEVELS = [
-        'low', 
-        'medium', 
-        'high', 
-        'unknown'
-    ];
 
     public function __construct(array $params = null)
     {
@@ -30,6 +17,14 @@ class UpdateSearchRequest
             $this->params = [];
         }
         $this->params = $params;
+
+        if ($params !== null && array_key_exists('match_status', $params)) {
+            $this->setMatchStatus($params['match_status']);
+        }
+
+        if ($params !== null && array_key_exists('risk_level', $params)) {
+            $this->setRiskLevel($params['risk_level']);
+        }
     }
 
     public function setMatchStatus(string $status)
@@ -62,12 +57,12 @@ class UpdateSearchRequest
 
     private function isValidMatchStatus(string $status)
     {
-        return in_array($status, self::VALID_STATUSES);
+        return in_array($status, MatchStatusFilter::VALID_STATUSES);
     }
 
     private function isValidRiskLevel(string $level)
     {
-        return in_array($level, self::VALID_LEVELS);
+        return in_array($level, RiskLevelFilter::VALID_LEVELS);
     }
 
     public function toArray(): array
