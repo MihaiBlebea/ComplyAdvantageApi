@@ -12,7 +12,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\RequestException;
 
-class GetSearchTest extends TestCase
+class GetSearchDetailsByIdTest extends TestCase
 {
     private const SUCCESS_RESPONSE = [
         'content' => [
@@ -23,21 +23,22 @@ class GetSearchTest extends TestCase
                 'assignee_id' => 14,
                 'search_profile' => [
                     'name' => 'My USA Profile 1',
-                    'slug' => 'my-usa-profile-1',
+                    'slug' => 'my-usa-profile-1'
                 ],
                 'filters' => [
                     'exact_match' => false,
                     'fuzziness' => 1,
-                ],
+                    'content' => []
+                ],     
                 'match_status' => 'potential_match',
                 'risk_level' => 'medium',
                 'search_term' => 'Hugo Jinkis',
                 'total_hits' => 1,
                 'updated_at' => '2015-06-16 09:58:22',
                 'created_at' => '2015-06-11 15:02:30',
-                'share_url' => 'http://app.complyadvantage.com/public/search/1496748100-l9qHqbVF/64a6114f299b',
+                'share_url' => 'http://app.complyadvantage.com/public/search/1495711341-Tu51KL9s/64a6114f299b',
             ],
-        ],
+        ]
     ];
 
     public function testSearchByIdSuccess()
@@ -51,7 +52,7 @@ class GetSearchTest extends TestCase
 
         $complyAdvantageApi = new ComplyAdvantageApi('abcd', $client);
 
-        $response = $complyAdvantageApi->getSearchById('1495711341-Tu51KL9s');
+        $response = $complyAdvantageApi->getSearchDetailsById('1495711341-Tu51KL9s');
 
         $this->assertEquals(self::SUCCESS_RESPONSE['content'], $response->getContent());
     }
@@ -72,6 +73,6 @@ class GetSearchTest extends TestCase
 
         $this->expectException(ApiException::class);
 
-        $complyAdvantageApi->getSearchById('1495711341-Tu51KL9s22222');
+        $complyAdvantageApi->getSearchDetailsById('1495711341-Tu51KL9s22222');
     }
 }
