@@ -61,7 +61,7 @@ class CreateSearchTest extends TestCase
         ]
     ];
 
-    public function testNoHits()
+    public function testCreateSuccessfullSearch()
     {   
         $mock = new MockHandler([
             new Response(200, ['Accept' => 'application/json'], json_encode(self::SUCCESS_RESPONSE))

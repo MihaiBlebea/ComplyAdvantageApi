@@ -3,7 +3,6 @@
 namespace Chip\Tests\Requests;
 
 use Chip\ComplyAdvantageApi\ComplyAdvantageApi;
-use Chip\ComplyAdvantageApi\Requests\GetSearchRequest;
 use Chip\ComplyAdvantageApi\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client;
@@ -22,6 +21,10 @@ class GetSearchTest extends TestCase
                 'ref' => '1495711341-Tu51KL9s',
                 'searcher_id' => 1,
                 'assignee_id' => 14,
+                'search_profile' => [
+                    'name' => 'My USA Profile 1',
+                    'slug' => 'my-usa-profile-1',
+                ],
                 'filters' => [
                     'exact_match' => false,
                     'fuzziness' => 1,
@@ -32,27 +35,12 @@ class GetSearchTest extends TestCase
                 'total_hits' => 1,
                 'updated_at' => '2015-06-16 09:58:22',
                 'created_at' => '2015-06-11 15:02:30',
+                'share_url' => 'http://app.complyadvantage.com/public/search/1496748100-l9qHqbVF/64a6114f299b',
             ],
-            [
-                'id' => 18,
-                'ref' => '1495711341-TuJJDF9s',
-                'searcher_id' => 1,
-                'assignee_id' => 1,
-                'filters' => [
-                    'exact_match' => false,
-                    'fuzziness' => 1,
-                ],
-                'match_status' => 'potential_match',
-                'risk_level' => 'high',
-                'search_term' => 'Vladimir Putin',
-                'total_hits' => 7,
-                'updated_at' => '2015-06-16 17:12:50',
-                'created_at' => '2015-06-11 14:45:11',
-            ]
-        ]
+        ],
     ];
 
-    public function testSuccessfullSearchRequest()
+    public function testSearchByIdSuccess()
     {   
         $mock = new MockHandler([
             new Response(200, [], json_encode(self::SUCCESS_RESPONSE))
@@ -63,12 +51,7 @@ class GetSearchTest extends TestCase
 
         $complyAdvantageApi = new ComplyAdvantageApi('abcd', $client);
 
-        $request = new GetSearchRequest([
-            'risk_level' => ['high', 'medium'],
-            'match_status' => ['potential_match']
-        ]);
-
-        $response = $complyAdvantageApi->getSearch($request);
+        $response = $complyAdvantageApi->getSearchById('1495711341-Tu51KL9s');
 
         $this->assertEquals(self::SUCCESS_RESPONSE['content'], $response->getContent());
     }
@@ -89,11 +72,6 @@ class GetSearchTest extends TestCase
 
         $this->expectException(ApiException::class);
 
-        $request = new GetSearchRequest([
-            'risk_level' => ['high', 'medium'],
-            'match_status' => ['potential_match']
-        ]);
-
-        $complyAdvantageApi->getSearch($request);
+        $complyAdvantageApi->getSearchById('1495711341-Tu51KL9s22222');
     }
 }
