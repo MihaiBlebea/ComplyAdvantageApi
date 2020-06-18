@@ -7,6 +7,7 @@ use Chip\ComplyAdvantageApi\Requests\GetSearchRequest;
 use Chip\ComplyAdvantageApi\Requests\UpdateSearchRequest;
 use Chip\ComplyAdvantageApi\Requests\UpdateSearchEntityRequest;
 use Chip\ComplyAdvantageApi\Exceptions\ApiException;
+use Chip\ComplyAdvantageApi\Responses\CreateSearchResponse;
 use GuzzleHttp\Client;
 use Exception;
 use DateTime;
@@ -16,22 +17,25 @@ class ComplyAdvantageApi
     /** @var string */
     private $key;
 
+    private $http;
+
     private const BASE_URL = "https://api.complyadvantage.com";
 
-    public function __construct(string $key)
+    public function __construct(string $key, Client $http = null)
     {
+        $this->http = $http;
         $this->key = $key;
     }
 
     // Create a new search by POSTing search terms, parameters and filters. 
     // By default creating a search will pull the first 100 results (if that many exist) from our database
-    public function createSearch(CreateSearchRequest $request): ?array
+    public function createSearch(CreateSearchRequest $request): ?CreateSearchResponse
     {
         try {
             $response = $this->http()->request('POST', '/searches?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody())['content'];
+                return new CreateSearchResponse($this->asArray((string) $response->getBody()));
             }
 
             return null;
@@ -47,7 +51,7 @@ class ComplyAdvantageApi
             $response = $this->http()->request('PATCH', '/searches/' . $id . '?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody())['content'];
+                return $this->asArray((string) $response->getBody());
             }
 
             return null;
@@ -63,7 +67,7 @@ class ComplyAdvantageApi
             $response = $this->http()->request('PATCH', '/searches/' . $id . '/entities?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody())['content'];
+                return $this->asArray((string) $response->getBody());
             }
 
             return null;
@@ -86,7 +90,7 @@ class ComplyAdvantageApi
             $response = $this->http()->request('GET', $url);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody())['content'];
+                return $this->asArray((string) $response->getBody());
             }
 
             return null;
@@ -103,7 +107,7 @@ class ComplyAdvantageApi
             $response = $this->http()->request('GET', '/searches/' . $id . '?api_key=' . $this->key);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody())['content'];
+                return $this->asArray((string) $response->getBody());
             }
 
             return null;
@@ -124,7 +128,7 @@ class ComplyAdvantageApi
             $response = $this->http()->request('GET', $url);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody())['content'];
+                return $this->asArray((string) $response->getBody());
             }
 
             return null;
@@ -151,6 +155,10 @@ class ComplyAdvantageApi
 
     private function http(): Client
     {
+        if ($this->http !== null) {
+            return $this->http;
+        }
+
         return new Client([
             'base_uri' => self::BASE_URL,
             'timeout'  => 2.0,

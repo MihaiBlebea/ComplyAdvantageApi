@@ -21,8 +21,8 @@ use Chip\ComplyAdvantageApi\Filters\FilterFactory;
 $request = new CreateSearchRequest();
 
 $searchTerm = new SearchTerm();
-$searchTerm->setFirstName('Ion');
-$searchTerm->setLastName('Iliescu');
+$searchTerm->setFirstName('Catalina');
+$searchTerm->setLastName('Enache');
 
 $request->setSearchTerm($searchTerm);
 
@@ -33,10 +33,6 @@ $request->shouldShareUrl(true);
 $request->setClientRef("CHIP_001");
 
 $request->setFilters($typeFilter, $countryFilter);
-
-// var_dump($request);
-// die();
-
 
 $response = $client->createSearch($request);
 
