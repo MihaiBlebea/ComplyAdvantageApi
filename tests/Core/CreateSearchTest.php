@@ -13,7 +13,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\RequestException;
 
-class ComplyAdvantageApiTest extends TestCase
+class CreateSearchTest extends TestCase
 {
     private const SUCCESS_RESPONSE = [
         'content' => [

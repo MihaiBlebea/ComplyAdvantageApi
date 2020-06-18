@@ -8,6 +8,9 @@ use Chip\ComplyAdvantageApi\Requests\UpdateSearchRequest;
 use Chip\ComplyAdvantageApi\Requests\UpdateSearchEntityRequest;
 use Chip\ComplyAdvantageApi\Exceptions\ApiException;
 use Chip\ComplyAdvantageApi\Responses\CreateSearchResponse;
+use Chip\ComplyAdvantageApi\Responses\GetSearchResponse;
+use Chip\ComplyAdvantageApi\Responses\GetSearchDetailsResponse;
+use Chip\ComplyAdvantageApi\Responses\UpdateSearchResponse;
 use GuzzleHttp\Client;
 use Exception;
 use DateTime;
@@ -45,13 +48,13 @@ class ComplyAdvantageApi
     }
 
     // Update the assignee, status or risk level of a search.
-    public function updateSearch(string $id, UpdateSearchRequest $request): ?array
+    public function updateSearch(string $id, UpdateSearchRequest $request): ?UpdateSearchResponse
     {
         try {
             $response = $this->http()->request('PATCH', '/searches/' . $id . '?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody());
+                return new UpdateSearchResponse($this->asArray((string) $response->getBody()));
             }
 
             return null;
@@ -61,13 +64,13 @@ class ComplyAdvantageApi
     }
 
     // Update the match-status of entities within a search result
-    public function updateSearchEntities(string $id, UpdateSearchEntityRequest $request): ?array
+    public function updateSearchEntities(string $id, UpdateSearchEntityRequest $request): ?UpdateSearchResponse
     {
         try {
             $response = $this->http()->request('PATCH', '/searches/' . $id . '/entities?api_key=' . $this->key, [ "json" => $request->toArray() ]);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody());
+                return new UpdateSearchResponse($this->asArray((string) $response->getBody()));
             }
 
             return null;
@@ -77,7 +80,7 @@ class ComplyAdvantageApi
     }
 
     // Retrieve the previous searches on your account. This includes many options for pagination and filtering results.
-    public function getSearch(GetSearchRequest $request): ?array
+    public function getSearch(GetSearchRequest $request): ?GetSearchResponse
     {
         try {
 
@@ -90,7 +93,7 @@ class ComplyAdvantageApi
             $response = $this->http()->request('GET', $url);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody());
+                return new GetSearchResponse($this->asArray((string) $response->getBody()));
             }
 
             return null;
@@ -101,13 +104,29 @@ class ComplyAdvantageApi
 
     // Retrieve a specific search on your account. 
     // For monitored searches, the original result will be updated with the latest results from the monitor runs.
-    public function getSearchById(string $id): ?array
+    public function getSearchById(string $id): ?GetSearchResponse
     {
         try {
             $response = $this->http()->request('GET', '/searches/' . $id . '?api_key=' . $this->key);
 
             if ($response->getBody()) {
-                return $this->asArray((string) $response->getBody());
+                return new GetSearchResponse($this->asArray((string) $response->getBody()));
+            }
+
+            return null;
+        } catch(Exception $e) {
+            throw new ApiException($e->getMessage(), null);
+        }
+    }
+
+    // Retrieve the full details and results of a specific search on your account.
+    public function getSearchDetailsById(string $id): ?GetSearchDetailsResponse
+    {
+        try {
+            $response = $this->http()->request('GET', '/searches/' . $id . '/details?api_key=' . $this->key);
+
+            if ($response->getBody()) {
+                return new GetSearchDetailsResponse($this->asArray((string) $response->getBody()));
             }
 
             return null;
@@ -161,8 +180,7 @@ class ComplyAdvantageApi
 
         return new Client([
             'base_uri' => self::BASE_URL,
-            'timeout'  => 2.0,
-            'headers' => ['Accept' => 'application/json'],
+            'timeout'  => 2.0
         ]);
     }
 

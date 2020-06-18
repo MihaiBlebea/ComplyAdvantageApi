@@ -2,29 +2,23 @@
 
 namespace Chip\ComplyAdvantageApi\Responses;
 
-class CreateSearchResponse
+use Chip\ComplyAdvantageApi\Responses\BaseResponse;
+
+class CreateSearchResponse extends BaseResponse
 {
-    /** @var array */
-    private $data;
-
-    public function __construct(array $data)
-    {
-        $this->data = $data["content"]["data"];
-    }
-
     public function getId(): int
     {
-        return $this->data["id"];
+        return $this->content["data"]["id"];
     }
 
     public function getRef(): string
     {
-        return $this->data["ref"];
+        return $this->content["data"]["ref"];
     }
 
     public function getHitsCount(): int
     {
-        return $this->data["total_hits"];
+        return $this->content["data"]["total_hits"];
     }
 
     public function getHits(): array
@@ -32,21 +26,21 @@ class CreateSearchResponse
         if ($this->getHitsCount() === 0) {
             return [];
         }
-        return $this->data["hits"];
+        return $this->content["data"]["hits"];
     }
 
     public function getMatchStatus(): string 
     {
-        return $this->data["match_status"];
+        return $this->content["data"]["match_status"];
     }
 
     public function getRiskLevel(): string
     {
-        return $this->data["risk_level"];
+        return $this->content["data"]["risk_level"];
     }
 
     public function getClientRef(): string
     {
-        return $this->data["client_ref"];
+        return $this->content["data"]["client_ref"];
     }
 }
